@@ -1,0 +1,26 @@
+[package]
+name = "sc-bench"
+version = "0.1.0-dev0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[lib]
+name = "sc_bench"
+crate-type = ["cdylib"]
+
+[dependencies]
+anyhow = "1.0"
+itertools = "0.13"
+kdtree = "0.7"
+ndarray = { version = "0.16", features = ["rayon"] }
+numpy = "0.23"
+rayon = "1.10"
+log = "0.4"
+env_logger = "0.11"
+
+[dependencies.pyo3]
+version = "0.23"
+features = ["extension-module", "anyhow"]
+
+[target.'cfg(not(target_env = "msvc"))'.dependencies]
+tikv-jemallocator = {version = "0.6", features = ["disable_initial_exec_tls"]}
