@@ -32,7 +32,7 @@ fn rank_distance(a: PyReadonlyArray2<'_, f64>, b: PyReadonlyArray2<'_, f64>) -> 
         .enumerate()
         .map(|(i, row)| {
             tree_a
-                .iter_nearest(row.as_slice().unwrap(), &squared_euclidean)
+                .iter_nearest(&row.to_vec(), &squared_euclidean)
                 .unwrap()
                 .position(|x| *x.1 == i)
                 .unwrap()
