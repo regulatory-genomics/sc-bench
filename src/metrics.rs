@@ -41,11 +41,19 @@ fn rank_distance(a: PyReadonlyArray2<'_, f64>, b: PyReadonlyArray2<'_, f64>) -> 
     d as f64 / a.shape()[0] as f64
 }
 
+#[pyfunction]
+fn normalized_rank_distance(a: PyReadonlyArray2<'_, f64>, b: PyReadonlyArray2<'_, f64>) -> f64 {
+    let n = a.as_array().shape()[0] - 1;
+    let d = rank_distance(a, b);
+    d / n as f64
+}
+
 #[pymodule]
 pub(crate) fn register_metrics(parent_module: &Bound<'_, PyModule>) -> PyResult<()> {
     let metrics = PyModule::new(parent_module.py(), "metrics")?;
 
     metrics.add_function(wrap_pyfunction!(rank_distance, &metrics)?)?;
+    metrics.add_function(wrap_pyfunction!(normalized_rank_distance, &metrics)?)?;
 
     parent_module.add_submodule(&metrics)
 }
